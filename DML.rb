@@ -60,6 +60,36 @@ class DML < DDL
         end
     end
 
+    # delete from mcu where movie = shang-chi_and_the_legend_of_the_ten_rings
+    def delete(tableName, columnName, compare, value)
+        fileName = getFileName(tableName)
+        deleteColumns = where(tableName, columnName, compare, value)
+        deleteColumns.shift()
+        if (File.file?(fileName))
+            file = File.open(fileName, "r")
+            contents = file.read().split("\n")
+            file.close()
+
+            contents.each_with_index do |c, i|
+                contents[i] = c.split(",")
+            end
+
+            deleteColumns.each do |dc|
+                contents.delete(dc)
+            end
+
+            contents.each_with_index do |c, i|
+                contents[i] = c.join(',')
+            end
+
+            File.open(fileName, "w") do |file|
+                file.puts(contents.join("\n"))
+            end
+        else
+            puts("#{tableName} table is not exists")
+        end
+    end
+
     def select(tableName, cols, order_by, refName, compare, refValue)
         contents = where(tableName, refName, compare, refValue)
         unless contents.nil?
