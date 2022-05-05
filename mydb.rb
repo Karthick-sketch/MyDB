@@ -57,6 +57,17 @@ while (true)
             else
                 puts("Database was not selected")
             end
+        elsif (ip.first == 'delete')
+            # delete from mcu where movie = shang-chi_and_the_legend_of_the_ten_rings
+            if (isDBSelected)
+                if (ip[1] == 'from' and ip[3] == 'where')
+                    dml.delete(ip[2], ip[4], ip[5], ip.last)
+                else
+                    puts("Invalid syntax")
+                end
+            else
+                puts("Database was not selected")
+            end
         elsif (ip.first == 'select')
             if (isDBSelected)
                 order_by = ((ip[-3] == "order" and ip[-2] == "by") ? ip.last : "")
