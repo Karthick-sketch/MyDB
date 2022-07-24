@@ -47,7 +47,6 @@ while (true)
                 puts("Database was not selected")
             end
         elsif (ip.first == 'update')
-            # update mcu set movie = shang-chi_and_the_legend_of_the_ten_rings where id = 25
             if (isDBSelected)
                 if (ip[2] == 'set' and ip[4] == '=')
                     dml.update(ip[1], ip[3], ip[5], ip[7], ip.last)
@@ -73,7 +72,7 @@ while (true)
                 order_by = ((ip[-3] == "order" and ip[-2] == "by") ? ip.last : "")
                 index = ip.index("where")
                 refName = compare = refValue = nil 
-                if (not index.nil?)
+                unless index.nil?
                     refName = ip[index+1]
                     compare = ip[index+2]
                     refValue = ip[index+3]
@@ -87,5 +86,3 @@ while (true)
         end
     end
 end
-
-# select * from mcu order by timeline
