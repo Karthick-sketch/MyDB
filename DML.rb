@@ -20,7 +20,6 @@ class DML < DDL
         end
     end
 
-    # update mcu set movie = shang-chi_and_the_legend_of_the_ten_rings where id = 25
     def update(tableName, columnName, newData, refName, refValue)
         fileName = getFileName(tableName)
         if (File.file?(fileName))
@@ -106,7 +105,6 @@ class DML < DDL
         end
     end
 
-    # where id = 27
     def where(tableName, refName, compare, refValue)
         contents = nil
         fileName = getFileName(tableName)
