@@ -60,18 +60,18 @@ class DML < DDL
     end
 
     def delete(tableName, columnName, compare, value)
-        fileName = getFileName(tableName)
         deleteColumns = where(tableName, columnName, compare, value)
-        deleteColumns.shift()
-        if (File.file?(fileName))
+        if deleteColumns.size > 1
+            fileName = getFileName(tableName)
             file = File.open(fileName, "r")
-            contents = file.read().split("\n")
+            contents = file.read().downcase.split("\n")
             file.close()
 
             contents.each_with_index do |c, i|
                 contents[i] = c.split(",")
             end
 
+            deleteColumns.shift()
             deleteColumns.each do |dc|
                 contents.delete(dc)
             end
@@ -83,8 +83,6 @@ class DML < DDL
             File.open(fileName, "w") do |file|
                 file.puts(contents.join("\n"))
             end
-        else
-            puts("#{tableName} table is not exists")
         end
     end
 
@@ -147,7 +145,7 @@ class DML < DDL
         if order_by != ""
             head = contents.first
             contents = contents.slice(1, contents.size-1)
-            arr = []; n = head.index(order_by)
+            arr, n = [], head.index(order_by)
             contents.each do |content|
                 inserted = false
                 arr.each do |a|
