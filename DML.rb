@@ -59,7 +59,6 @@ class DML < DDL
         end
     end
 
-    # delete from mcu where movie = shang-chi_and_the_legend_of_the_ten_rings
     def delete(tableName, columnName, compare, value)
         fileName = getFileName(tableName)
         deleteColumns = where(tableName, columnName, compare, value)
@@ -101,7 +100,7 @@ class DML < DDL
                     contents[i] = colNum.map { |c| content[c] }
                 end
             end
-            Table::table(orderBy(contents, order_by))
+            Table::tableBody(orderBy(contents, order_by))
         end
     end
 
@@ -120,6 +119,8 @@ class DML < DDL
                 head = contents.first; title = head.index(refName);
                 contents = contents.slice(1, contents.size-1)
                 case compare
+                when "like"
+                    contents = contents.filter { |content| content[title].include?(refValue) }
                 when "="
                     contents = contents.filter { |content| content[title] == refValue }
                 when "!="

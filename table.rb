@@ -25,7 +25,12 @@ module Table
         return maxContent
     end
 
-    def Table.table(contents)
+    def Table.tableBody(contents, center_align=false)
+        contents[0].unshift(" ")
+        for i in 1...contents.size
+            contents[i].unshift(i.to_s)
+        end
+
         cols = maxCols(contents)
         maxContent = maxColContent(contents, cols)
         cells = []; text = []
@@ -35,9 +40,13 @@ module Table
 
         contents.each do |content|
             content.each_with_index do |c, i|
-                s = (maxContent[i] - c.size)
-                spc = (s > 0 ? ' ' * (s/2) : '')
-                text << ((s == 1 ? ' ' : ((s%2 == 1 ? ' ' : '') + spc)) + c + spc)
+                if center_align
+                    s = (maxContent[i] - c.size)
+                    spc = (s > 0 ? ' ' * (s/2) : '')
+                    text << ((s == 1 ? ' ' : ((s%2 == 1 ? ' ' : '') + spc)) + c + spc)
+                else
+                    text << (c + (" " * (maxContent[i] - c.size)))
+                end
             end
             cells << "| #{text.join(' | ')} |\n"
             text.clear()

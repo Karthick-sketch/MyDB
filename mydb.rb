@@ -8,11 +8,14 @@ while (true)
         break
     elsif (ip == "show databases")
         dir = (%x{ cd databases; ls -d */ }).delete("/").split("\n")
-        Table::table(dir.map { |d| [d] })
+        dbs = dir.map { |d| [d] }; dbs.unshift(["databases"])
+        Table::tableBody(dbs)
     elsif (ip == "show tables")
         if (isDBSelected)
             tables = (%x{ cd databases/#{dml.getDatabase()}; ls *.csv }).split("\n")
-            Table::table(tables.map { |d| [d.slice(0, d.index("."))] })
+            tables = tables.map { |d| [d.slice(0, d.index("."))] }
+            tables.unshift(["tables"])
+            Table::tableBody(tables)
         else
             puts("Database was not selected")
         end
@@ -57,7 +60,6 @@ while (true)
                 puts("Database was not selected")
             end
         elsif (ip.first == 'delete')
-            # delete from mcu where movie = shang-chi_and_the_legend_of_the_ten_rings
             if (isDBSelected)
                 if (ip[1] == 'from' and ip[3] == 'where')
                     dml.delete(ip[2], ip[4], ip[5], ip.last)
