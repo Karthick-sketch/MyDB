@@ -9,11 +9,11 @@ class DML < DDL
         fileName = getFileName(tableName)
         if (File.file?(fileName))
             file = File.open(fileName, "r")
-            content = file.read()
+            content = decryption(file.read())
             file.close()
 
             File.open(fileName, "w") do |file|
-                file.puts(content + attributes.join(","))
+                file.syswrite(encryption(content + "\n" + attributes.join(",")))
             end
         else
             puts("#{tableName} table is not exists")
@@ -24,7 +24,7 @@ class DML < DDL
         fileName = getFileName(tableName)
         if (File.file?(fileName))
             file = File.open(fileName, "r")
-            contents = file.read().split("\n")
+            contents = decryption(file.read()).split("\n")
             file.close()
 
             contents.each_with_index do |c, i|
@@ -49,7 +49,7 @@ class DML < DDL
                 end
 
                 File.open(fileName, "w") do |file|
-                    file.puts(contents.join("\n"))
+                    file.syswrite(encryption(contents.join("\n")))
                 end
             else
                 puts("syntax error")
@@ -64,7 +64,7 @@ class DML < DDL
         if deleteColumns.size > 1
             fileName = getFileName(tableName)
             file = File.open(fileName, "r")
-            contents = file.read().downcase.split("\n")
+            contents = decryption(file.read()).downcase.split("\n")
             file.close()
 
             contents.each_with_index do |c, i|
@@ -81,7 +81,7 @@ class DML < DDL
             end
 
             File.open(fileName, "w") do |file|
-                file.puts(contents.join("\n"))
+                file.syswrite(encryption(contents.join("\n")))
             end
         end
     end
@@ -107,7 +107,7 @@ class DML < DDL
         fileName = getFileName(tableName)
         if (File.file?(fileName))
             file = File.open(fileName, "r")
-            contents = file.read().downcase.split("\n")
+            contents = decryption(file.read()).downcase.split("\n")
             file.close()
             contents.each_with_index do |c, i|
                 contents[i] = c.split(",")
