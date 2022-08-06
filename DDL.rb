@@ -9,7 +9,7 @@ class DDL < AdditionalMethods
         fileName = getFileName(tableName)
         unless (File.file?(fileName))
             file = File.new(fileName, "w")
-            file.syswrite(attributes.join(",")+"\n")
+            file.syswrite(encryption(attributes.join(",")+"\n"))
             file.close()
         else
             puts("#{tableName} table is already exists")
