@@ -12,7 +12,7 @@ while (true)
         Table::tableBody(dbs)
     elsif (ip == "show tables")
         if (isDBSelected)
-            tables = (%x{ cd databases/#{dml.getDatabase()}; ls *.csv }).split("\n")
+            tables = (%x{ cd databases/#{dml.getDatabase()}; ls *.mydb }).split("\n")
             tables = tables.map { |d| [d.slice(0, d.index("."))] }
             tables.unshift(["tables"])
             Table::tableBody(tables)
